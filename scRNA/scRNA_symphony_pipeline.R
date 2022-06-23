@@ -25,20 +25,20 @@ fetal_atlas = Matrix(as.matrix(fetal_atlas),sparse=TRUE)
 
 tissue_type_SL <- rep('Fetal Ovary Cells', 1488)
 
-cell_subset = grep(paste(paste('^',key_value,sep=''),'_',sep=''), query_exp$barcodes, value=TRUE)
-
 source <- rep('fetal', 1488)
 ref_meta$source = 'ref'
 
 sample = colnames(fetal_atlas)
+
+
+df <- data.frame(tissue_type_SL, sample, source)
+str(df$tissue_type_SL)
 
 sample_list = as.character(df$sample)
 sample_list[grepl("F.",df$sample)] = 'Fetal ovary cells'
 sample_list[grep("M.",df$sample)] = 'Fetal spermatogonial cells'
 tissue_type_SL = unlist(sample_list)
 
-df <- data.frame(tissue_type_SL, sample, source)
-str(df$tissue_type_SL)
 common_cols <- intersect(colnames(ref_meta), colnames(df))
 full_meta = rbind(
   subset(ref_meta, select = common_cols),
